@@ -1,8 +1,31 @@
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #fafafa;
+  color: #333;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 22px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+#bubble_plot,
 #symbol_map {
-	top:100px;
-	bottom: 100px; 
-	left: 100px;
-	right: 100px;
-	/*height: 1000px;
-	width: 800px;*/
+  margin: 0 auto;
+  width: 90%;
+  max-width: 900px;
+  height: auto;
+  position: relative;
+}
+
+#bubble_plot {
+  margin-bottom: 60px;
+}
+
+#symbol_map {
+  margin-bottom: 100px;
 }

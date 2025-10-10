@@ -1,0 +1,175 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 700,
+  "height": 500,
+  "data": {
+    "url": "https://raw.githubusercontent.com/kaiheuheu/3179_HW10/refs/heads/main/data/country_comparison_large_dataset.csv"
+  },
+  "params": [
+    {
+      "name": "year_older",
+      "value": 2022,
+      "bind": {
+        "input": "range",
+        "min": 2000,
+        "max": 2023,
+        "step": 1,
+        "name": "Older Year: "
+      }
+    },
+    {
+      "name": "year_newer",
+      "value": 2023,
+      "bind": {
+        "input": "range",
+        "min": 2000,
+        "max": 2023,
+        "step": 1,
+        "name": "Newer Year: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum.Year == year_older || datum.Year == year_newer"
+    },
+    {
+      "calculate": "datum['CO2 Emissions (Million Metric Tons)'] / datum['Population (in Millions)']",
+      "as": "CO2 per Capita (MT per Million)"
+    }
+  ],
+  "layer": [
+    {
+      "mark": "circle",
+      "encoding": {
+        "x": {
+          "field": "CO2 per Capita (MT per Million)",
+          "type": "quantitative",
+          "title": "CO2 Emissions per Capita (Million Metric Tons / Million People)",
+          "scale": { "zero": false }
+        },
+        "y": {
+          "field": "GDP per Capita (in USD)",
+          "type": "quantitative",
+          "title": "GDP per Capita (USD)",
+          "scale": { "zero": false }
+        },
+        "size": {
+          "field": "CO2 Emissions (Million Metric Tons)",
+          "type": "quantitative",
+          "title": "Total CO2 Emissions (MMT)",
+          "scale": { "range": [1000, 5000] },
+          "legend": { "symbolSize": 150 }
+        },
+        "color": {
+          "field": "Country",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "China",
+              "USA",
+              "India",
+              "Russia",
+              "Canada",
+              "Australia"
+            ],
+            "range": [
+              "#e41a1c",
+              "#377eb8",
+              "#4daf4a",
+              "#984ea3",
+              "#ff7f00",
+              "#a65628"
+            ]
+          },
+          "legend": null
+        },
+        "opacity": {
+          "condition": [
+            { "test": "datum.Year == year_newer", "value": 0.8 },
+            { "test": "datum.Year == year_older", "value": 0.3 }
+          ],
+          "value": 0
+        },
+        "tooltip": [
+          { "field": "Country", "type": "nominal" },
+          { "field": "Year", "type": "quantitative" },
+          {
+            "field": "GDP per Capita (in USD)",
+            "type": "quantitative",
+            "format": ","
+          },
+          {
+            "field": "CO2 Emissions (Million Metric Tons)",
+            "type": "quantitative",
+            "format": ","
+          },
+          {
+            "field": "CO2 per Capita (MT per Million)",
+            "type": "quantitative",
+            "format": ".2f"
+          },
+          {
+            "field": "Population (in Millions)",
+            "type": "quantitative",
+            "format": ","
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Year == year_newer"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 20,
+        "fontSize": 11.5,
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "text": { "field": "Country", "type": "nominal" },
+        "color": { "value": "black" },
+        "opacity": {
+          "condition": {
+            "test": "datum['Country'] == 'China' || datum['Country'] == 'USA' || datum['Country'] == 'India' || datum['Country'] == 'Russia' || datum['Country'] == 'Canada' || datum['Country'] == 'Australia'",
+            "value": 1
+          },
+          "value": 0
+        },
+        "x": {
+          "field": "CO2 per Capita (MT per Million)",
+          "type": "quantitative"
+        },
+        "y": { "field": "GDP per Capita (in USD)", "type": "quantitative" },
+        "tooltip": [
+          { "field": "Country", "type": "nominal" },
+          {
+            "field": "GDP per Capita (in USD)",
+            "type": "quantitative",
+            "format": ","
+          },
+          {
+            "field": "CO2 Emissions (Million Metric Tons)",
+            "type": "quantitative",
+            "format": ","
+          },
+          {
+            "field": "CO2 per Capita (MT per Million)",
+            "type": "quantitative",
+            "format": ".2f"
+          },
+          {
+            "field": "Population (in Millions)",
+            "type": "quantitative",
+            "format": ","
+          }
+        ]
+      }
+    }
+  ]
+}
